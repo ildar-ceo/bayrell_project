@@ -10,15 +10,15 @@ $context = Runtime\RuntimeUtils::registerGlobalContext
 (
 	new Runtime\Vector
 	(
-		"App",
-		"Runtime",
+		"App.IndexPage",
+		"Core.Backend",
 		"Core.ModuleInfo",
-		"Core.UI"
+		"Core.FileSystem.Provider"
 	)
 );
 
 /* Module Search driver */
-$driver = $context->getDriver("BayrellLang.Compiler.ModuleSearchDriver");
+$driver = $context->getDriver("Core.ModuleInfo.ModuleSearchDriver");
 $driver->addSearchPath($base_path . "/app");
 $driver->addSearchPath($base_path . "/lib");
 
@@ -27,3 +27,17 @@ $context->init();
 
 
 /* Run App */
+$app = $context->getDriver("Backend.App");
+$request = Core\Http\Request::createPHPRequest();
+
+$container = $app->renderRoute("App.IndexPage.Routes", "IndexPage", $request, null);
+$container = $app->response($container);
+
+if ($container->response)
+{
+	echo $container->response->content;
+}
+else
+{
+	echo "Not found";
+}

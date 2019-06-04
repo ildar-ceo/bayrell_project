@@ -238,7 +238,7 @@ class App
 		for (var i=0; i<files.length; i++)
 		{
 			var file_path = files[i];
-			if (fs.lstatSync(file_path).isFile(file_path))
+			if (fs.lstatSync(file_path).isFile())
 			{
 				console.log("File " + file_path);
 				var extname = path.extname(file_path).substr(1);
@@ -253,6 +253,40 @@ class App
 			}
 		}
 	}
+	
+	
+	makeSymlink(module_name)
+	{
+		var module = this.findModuleByName(module_name);
+		if (module == null)
+		{
+			console.log('Module %s not found', module_name);
+			return;
+		}
+		
+		var es6_path_src = path.normalize(module.path + "/es6");
+		var es6_path_dest = path.normalize(this.current_path + "/web/assets/" + module_name + "/es6");
+		var resources_path_src = path.normalize(module.path + "/resources");
+		var resources_path_dest = path.normalize(this.current_path + "/web/assets/" + module_name + "/resources");
+		
+		shelljs.mkdir('-p', this.current_path + "/web/assets/" + module_name );
+
+		if (fs.existsSync(es6_path_src))
+		{
+			if (fs.existsSync(es6_path_dest)) fs.unlinkSync(es6_path_dest);
+			fs.symlinkSync(es6_path_src, es6_path_dest);
+			console.log(es6_path_dest, "->", es6_path_src);
+		}
+		
+		if (fs.existsSync(resources_path_src))
+		{
+			if (fs.existsSync(resources_path_dest)) fs.unlinkSync(resources_path_dest);
+			fs.symlinkSync(resources_path_src, resources_path_dest);
+			console.log(resources_path_dest, "->", resources_path_src);
+		}
+		
+	}
+	
 }
 
 

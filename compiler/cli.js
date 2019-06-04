@@ -22,6 +22,25 @@ else if (cmd == "modules")
 	}
 }
 
+else if (cmd == "make_symlink")
+{
+	var name = process.argv[3];
+	if (name == undefined)
+	{
+		console.log("Type module name");
+		process.exit();
+	}
+	app.makeSymlink(name);
+}
+
+else if (cmd == "make_symlinks")
+{
+	for (var i=0; i<app.modules.length; i++)
+	{
+		app.makeSymlink(app.modules[i].name);
+	}
+}
+
 else if (cmd == "make")
 {
 	var name = process.argv[3];
@@ -43,6 +62,6 @@ else if (cmd == "make_all")
 
 else
 {
-	console.log( "Type " + process.argv[1] + " {watch|modules|make|make_all}" );
+	console.log( "Type " + process.argv[1] + " {watch|modules|make|make_all|make_symlinks|make_symlink}" );
 	console.log( "" );
 }
