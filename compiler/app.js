@@ -68,26 +68,22 @@ class App
 			this.addModule( item.name, path.normalize(this.current_path + "/" + item.path), item.lang );
 		}
 	}
+	
+	scanModules(dir_path)
+	{
+		var arr = fs.readdirSync(dir_path).sort();
+		for (var i=0; i<arr.length; i++)
+		{
+			var module_name = arr[i];
+			this.addModule( module_name, path.normalize(dir_path + "/" + module_name), ["php", "es6"] );
+		}
+	}
+	
 	loadConfig()
 	{
-		var json_path = this.current_path + "/project.json";
-		if (!fs.existsSync(json_path))
-		{
-			console.log("Error. File " + json_path + " not found.");
-			return false;
-		}
-		var success = false;
-		var content = fs.readFileSync(json_path).toString();
-		try
-		{
-			this.init( JSON.parse(content) );
-			success = true;
-		}
-		catch(e)
-		{
-			console.log(e.toString());
-		}
-		return success;
+		this.scanModules(this.current_path + "/app");
+		this.scanModules(this.current_path + "/lib");
+		return true;
 	}
 	onChange(eventType, file_path)
 	{

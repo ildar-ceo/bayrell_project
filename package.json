@@ -15,6 +15,7 @@
     "bayrell-file-system-nodejs": "0.7.2-1",
     "bayrell-lang-nodejs": "0.7.2-1",
     "bayrell-parser-nodejs": "0.7.2-1",
-    "bayrell-runtime-nodejs": "0.7.2-1"
+    "bayrell-runtime-nodejs": "0.7.2-1",
+    "node-watch": "^0.6.2"
   }
 }

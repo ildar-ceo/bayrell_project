@@ -33,9 +33,55 @@ class Autoload
 	/**
 	 * Load module
 	 */
+	function loadModule($arr1, $arr2)
+	{
+		$module_name = implode(".", $arr1);
+		$file_name = array_pop($arr2);
+		$path = implode("/", $arr2);
+		if ($path) $path .= "/";
+		
+		$file_path = ROOT_PATH . "/app/" . $module_name . "/php/" . $path . $file_name . ".php";
+		//var_dump($file_path);
+		if ($this->tryLoadFile($file_path))
+		{
+			return true;
+		}
+		
+		$file_path = ROOT_PATH . "/lib/" . $module_name . "/php/" . $path . $file_name . ".php";
+		//var_dump($file_path);
+		if ($this->tryLoadFile($file_path))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	/**
+	 * Load class
+	 */
 	function load($name)
 	{
 		$arr = explode("\\", $name);
+		$sz=count($arr);
+		$i=1;
+		
+		while ($i<$sz)
+		{
+			$arr1 = array_slice($arr, 0, $i);
+			$arr2 = array_slice($arr, $i);
+			
+			if ($this->loadModule($arr1, $arr2))
+			{
+				return true;
+			}
+			
+			$i++;
+		}
+		/*
+		
 		$file_name = array_pop($arr) . ".php";
 		$module_name = array_shift($arr);
 		
@@ -50,7 +96,7 @@ class Autoload
 		{
 			return true;
 		}
-		
+		*/
 		return false;
 	}
 	
