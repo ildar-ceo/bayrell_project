@@ -39,14 +39,14 @@ class Autoload
 		$file_name = array_pop($arr2);
 		$path = implode("/", $arr2);
 		if ($path) $path .= "/";
-		
+		/*
 		$file_path = ROOT_PATH . "/app/" . $module_name . "/php/" . $path . $file_name . ".php";
 		//var_dump($file_path);
 		if ($this->tryLoadFile($file_path))
 		{
 			return true;
 		}
-		
+		*/
 		$file_path = ROOT_PATH . "/lib/" . $module_name . "/php/" . $path . $file_name . ".php";
 		//var_dump($file_path);
 		if ($this->tryLoadFile($file_path))

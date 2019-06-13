@@ -81,7 +81,7 @@ class App
 	
 	loadConfig()
 	{
-		this.scanModules(this.current_path + "/app");
+		//this.scanModules(this.current_path + "/app");
 		this.scanModules(this.current_path + "/lib");
 		return true;
 	}
@@ -114,12 +114,21 @@ class App
 	}
 	findModuleByFileName(file_path)
 	{
+		var sz = 0;
+		var find = null;
 		for (var i=0; i<this.modules.length; i++)
 		{
 			var module = this.modules[i];
-			if (file_path.indexOf(module.path) == 0) return module;
+			if (file_path.indexOf(module.path) == 0)
+			{
+				if (sz < module.path.length)
+				{
+					sz = module.path.length;
+					find = module;
+				}
+			}
 		}
-		return null;
+		return find;
 	}
 	onChangeFileInModule(module, file_path)
 	{
