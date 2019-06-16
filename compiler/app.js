@@ -52,12 +52,11 @@ class App
 		this.translator_nodejs_factory = new BayrellLang.LangNodeJS.TranslatorNodeJSFactory(this.context);
 		this.translator_php_factory = new BayrellLang.LangPHP.TranslatorPHPFactory(this.context);
 	}
-	addModule(name, path, langs)
+	addModule(name, path)
 	{
 		var module = new Module();
 		module.name = name;
 		module.path = path;
-		module.langs = langs;
 		this.modules.push(module);
 	}
 	init(obj)
@@ -65,7 +64,7 @@ class App
 		for (var i=0; i<obj.modules.length; i++)
 		{
 			var item = obj.modules[i];
-			this.addModule( item.name, path.normalize(this.current_path + "/" + item.path), item.lang );
+			this.addModule( item.name, path.normalize(this.current_path + "/" + item.path) );
 		}
 	}
 	
@@ -75,7 +74,7 @@ class App
 		for (var i=0; i<arr.length; i++)
 		{
 			var module_name = arr[i];
-			this.addModule( module_name, path.normalize(dir_path + "/" + module_name), ["php", "es6"] );
+			this.addModule( module_name, path.normalize(dir_path + "/" + module_name) );
 		}
 	}
 	
@@ -144,12 +143,13 @@ class App
 		if (extname == "bay" || extname == 'es6')
 		{
 			console.log(file_path);
+			var langs = ["php", "es6"];
 			
 			try
 			{
-				for (var i=0; i<module.langs.length; i++)
+				for (var i=0; i<langs.length; i++)
 				{
-					var lang = module.langs[i];
+					var lang = langs[i];
 					this.compileFile(module, file_path, extname, lang, true);
 				}
 				console.log('Ok');
@@ -163,6 +163,11 @@ class App
 	}
 	compileFile(module, file_path, lang_from, lang_to, verbose)
 	{
+		if (lang_to != "php" && lang_to != "es6" && lang_to != "nodejs")
+		{
+			return;
+		}
+		
 		var lib_path = path.normalize(module.path + "/bay");
 		var extname = path.extname(file_path);
 		var basename = path.basename(file_path, extname);
@@ -234,8 +239,9 @@ class App
 		watch(this.current_path, { recursive: true }, this.onChange.bind(this));
 	}
 	
-	compileModule(module_name)
+	compileModule(module_name, langs)
 	{
+		if (langs == undefined) langs = ["php", "es6"];
 		var module = this.findModuleByName(module_name);
 		if (module == null)
 		{
@@ -253,9 +259,9 @@ class App
 				var extname = path.extname(file_path).substr(1);
 				if (extname == 'bay' || extname == 'es6')
 				{
-					for (var j=0; j<module.langs.length; j++)
+					for (var j=0; j<langs.length; j++)
 					{
-						var lang = module.langs[j];
+						var lang = langs[j];
 						this.compileFile(module, file_path, extname, lang, false);
 					}
 				}

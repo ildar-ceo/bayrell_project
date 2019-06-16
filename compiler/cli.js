@@ -49,7 +49,17 @@ else if (cmd == "make")
 		console.log("Type module name");
 		process.exit();
 	}
-	app.compileModule(name);
+	
+	var lang = process.argv[4];
+	if (lang == undefined)
+	{
+		lang = ["php", "es6"]
+	}
+	else
+	{
+		lang = [ lang ];
+	}
+	app.compileModule(name, lang);
 }
 
 else if (cmd == "make_all")

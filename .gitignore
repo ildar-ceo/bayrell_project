@@ -3,4 +3,7 @@
 /node_modules
 /tmp
 /var
+/web/prg.bay
 /web/assets
+package.json
+package-lock.json
