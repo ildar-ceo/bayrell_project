@@ -64,9 +64,19 @@ else if (cmd == "make")
 
 else if (cmd == "make_all")
 {
+	var lang = process.argv[3];
+	if (lang == undefined)
+	{
+		lang = ["php", "es6"]
+	}
+	else
+	{
+		lang = [ lang ];
+	}
+	
 	for (var i=0; i<app.modules.length; i++)
 	{
-		app.compileModule(app.modules[i].name);
+		app.compileModule(app.modules[i].name, lang);
 	}
 }
 
