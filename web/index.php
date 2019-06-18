@@ -18,6 +18,7 @@ $context = Runtime\RuntimeUtils::registerGlobalContext
 (
 	new Vector
 	(
+		"App.IndexPage",
 		"BayrellConsole.AppEditor",
 		"BayrellLang.WebTest"
 	)

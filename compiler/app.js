@@ -80,8 +80,13 @@ class App
 	
 	loadConfig()
 	{
-		//this.scanModules(this.current_path + "/app");
-		this.scanModules(this.current_path + "/lib");
+		var json_data = fs.readFileSync('project.json');
+		var json = JSON.parse(json_data);
+		for (var i in json.modules)
+		{
+			var module_path = json.modules[i];
+			this.scanModules(this.current_path + module_path);
+		}
 		return true;
 	}
 	onChange(eventType, file_path)
